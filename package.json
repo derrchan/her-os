@@ -9,18 +9,28 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@openai/realtime-api-beta": "github:openai/openai-realtime-api-beta",
+    "@types/three": "^0.167.2",
+    "google-auth-library": "^9.14.0",
+    "googleapis": "^143.0.0",
+    "lucide-react": "^0.462.0",
+    "next": "^14.2.18",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.7"
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "three": "^0.168.0",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/ws": "^8.5.13",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.7",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.7"
+    "typescript": "^5"
   }
 }
