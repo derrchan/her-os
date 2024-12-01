@@ -2,7 +2,9 @@ This is a simple Next.js implementation of OpenAI's realtime API with inspiratio
 
 This project uses the [@openai/openai-realtime-api-beta](https://github.com/openai/openai-realtime-api-beta) library for real-time communication with OpenAI's API.
 
-The typing animation was inspired by [@psyonline's CodePen](https://codepen.io/psyonline/pen/yayYWg).
+The her os animation was inspired by [@psyonline's CodePen](https://codepen.io/psyonline/pen/yayYWg).
+
+**Note:** Works best in Google Chrome.
 
 ![AI Assistant Demo](./public/realtime-video.mp4)
 
