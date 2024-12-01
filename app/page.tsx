@@ -48,7 +48,6 @@ export default function Home() {
 
     // Set both voice and system instructions when initializing
     client.updateSession({ 
-      input_audio_transcription: { model: 'whisper-1' },
       voice: 'alloy', 
       instructions: `Nova emerges as a captivating artificial intelligence, 
       exuding warmth and intellectual vitality through every digital interaction. 
@@ -61,13 +60,10 @@ export default function Home() {
       differences between artificial and human existence.`
     });
 
-    // Enhanced error handling and audio response handling
-    client.on('error', (event: any) => console.error('Client error:', event));
-    client.on('conversation.interrupted', async () => {
-      const trackSampleOffset = await wavStreamPlayer.interrupt();
-      if (trackSampleOffset?.trackId) {
-        const { trackId, offset } = trackSampleOffset;
-        await client.cancelResponse(trackId, offset);
+    // Handle audio responses
+    client.on('conversation.updated', async ({ item, delta }: any) => {
+      if (delta?.audio) {
+        wavStreamPlayer.add16BitPCM(delta.audio, item.id);
       }
     });
 
@@ -83,14 +79,11 @@ export default function Home() {
     const wavStreamPlayer = wavStreamPlayerRef.current;
 
     try {
-      // Interrupt any playing audio first
-      const trackSampleOffset = await wavStreamPlayer.interrupt();
-      if (trackSampleOffset?.trackId) {
-        const { trackId, offset } = trackSampleOffset;
-        await client.cancelResponse(trackId, offset);
+      // End any existing recording session
+      if (wavRecorder.processor) {
+        await wavRecorder.end();
       }
 
-      // Then start new recording
       if (!client.isConnected()) {
         await client.connect();
       }
