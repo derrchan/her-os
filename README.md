@@ -1,6 +1,6 @@
 This is a simple Next.js implementation of OpenAI's realtime API with inspirations from her os.
 
-This project uses the [@openai/openai-realtime-api-beta](https://github.com/openai/openai-realtime-api-beta) library for real-time communication with OpenAI's API.
+This project uses the [@openai/openai-realtime-api-beta](https://github.com/openai/openai-realtime-api-beta) library for real-time communication with OpenAI's API, and audio processing tools from [OpenAI's Realtime Console](https://github.com/openai/openai-realtime-console).
 
 The her os animation was inspired by [@psyonline's CodePen](https://codepen.io/psyonline/pen/yayYWg).
 
