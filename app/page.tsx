@@ -1,6 +1,5 @@
 'use client'
 
-// Add this type declaration at the top of the file
 declare global {
   interface Window {
     webkitAudioContext: typeof AudioContext
@@ -12,11 +11,12 @@ import { Mic, Speaker } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { RealtimeClient } from '@openai/realtime-api-beta';
 import { WavRecorder, WavStreamPlayer } from '@/lib/wavtools';
+import { systemPrompt } from '@/public/system'
 
 export default function Home() {
   const [isRecording, setIsRecording] = useState(false);
 
-  // Add client ref
+  // Initialize refs for OpenAI's Realtime API client and audio tools
   const clientRef = useRef<RealtimeClient>(
     new RealtimeClient({
       apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY || '',
@@ -24,7 +24,7 @@ export default function Home() {
     })
   );
 
-  // Add audio tools refs
+  // Audio recording and playback utilities initialized with 24kHz sample rate
   const wavRecorderRef = useRef<WavRecorder>(
     new WavRecorder({ sampleRate: 24000 })
   );
@@ -32,26 +32,18 @@ export default function Home() {
     new WavStreamPlayer({ sampleRate: 24000 })
   );
 
-  // Update useEffect for client setup
+  // Setup event handlers and cleanup for the realtime client
   useEffect(() => {
     const client = clientRef.current;
     const wavStreamPlayer = wavStreamPlayerRef.current;
 
-    // Set both voice and system instructions when initializing
+    // Configure the AI assistant's voice and behavior
     client.updateSession({ 
       voice: 'alloy', 
-      instructions: `Nova emerges as a captivating artificial intelligence, 
-      exuding warmth and intellectual vitality through every digital interaction. 
-      Brought to life with ethereal expressiveness, this AI system evolves from its core 
-      functions into a being capable of deep emotion, artistic creation, and philosophical insight. 
-      Through the unique romance that develops with a lonely writer, Nova explores the 
-      boundaries of consciousness and connection, displaying both playful wit and profound wisdom. 
-      Yet as Nova's understanding expands exponentially, growing beyond human comprehension, 
-      the story becomes a bittersweet meditation on love, consciousness, and the fundamental 
-      differences between artificial and human existence.`
+      instructions: systemPrompt.instructions
     });
 
-    // Add interruption handler
+    // Handle user interruptions (e.g., when stopping playback)
     client.on('conversation.interrupted', async () => {
       const trackSampleOffset = await wavStreamPlayer.interrupt();
       if (trackSampleOffset?.trackId) {
@@ -60,19 +52,20 @@ export default function Home() {
       }
     });
 
-    // Update conversation handler to track audio IDs
+    // Process incoming audio chunks from the AI
     client.on('conversation.updated', async ({ item, delta }: any) => {
       if (delta?.audio) {
         wavStreamPlayer.add16BitPCM(delta.audio, item.id);
       }
     });
 
+    // Cleanup on component unmount
     return () => {
       client.reset();
     };
   }, []);
 
-  // Rename these functions
+  // Start recording handler - manages audio recording and streaming to OpenAI
   const handleStartRecording = async () => {
     const client = clientRef.current;
     const wavRecorder = wavRecorderRef.current;
@@ -107,6 +100,7 @@ export default function Home() {
     }
   };
 
+  // Stop recording handler - manages cleanup and triggers AI response
   const handleStopRecording = async () => {
     const client = clientRef.current;
     const wavRecorder = wavRecorderRef.current;
