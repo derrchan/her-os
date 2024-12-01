@@ -1,4 +1,6 @@
-This is a simple Next.js implementation of OpenAI's realtime API with inspirations from her os. 
+This is a simple Next.js implementation of OpenAI's realtime API with inspirations from her os.
+
+This project uses the [@openai/openai-realtime-api-beta](https://github.com/openai/openai-realtime-api-beta) library for real-time communication with OpenAI's API.
 
 ![AI Assistant Interface](./public/her.png)
 
