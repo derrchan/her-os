@@ -51,7 +51,16 @@ export default function Home() {
       differences between artificial and human existence.`
     });
 
-    // Handle audio responses
+    // Add interruption handler
+    client.on('conversation.interrupted', async () => {
+      const trackSampleOffset = await wavStreamPlayer.interrupt();
+      if (trackSampleOffset?.trackId) {
+        const { trackId, offset } = trackSampleOffset;
+        await client.cancelResponse(trackId, offset);
+      }
+    });
+
+    // Update conversation handler to track audio IDs
     client.on('conversation.updated', async ({ item, delta }: any) => {
       if (delta?.audio) {
         wavStreamPlayer.add16BitPCM(delta.audio, item.id);
@@ -70,6 +79,13 @@ export default function Home() {
     const wavStreamPlayer = wavStreamPlayerRef.current;
 
     try {
+      // Interrupt any existing audio playback before starting new recording
+      const trackSampleOffset = await wavStreamPlayer.interrupt();
+      if (trackSampleOffset?.trackId) {
+        const { trackId, offset } = trackSampleOffset;
+        await client.cancelResponse(trackId, offset);
+      }
+
       // End any existing recording session
       if (wavRecorder.processor) {
         await wavRecorder.end();
@@ -94,9 +110,18 @@ export default function Home() {
   const handleStopRecording = async () => {
     const client = clientRef.current;
     const wavRecorder = wavRecorderRef.current;
+    const wavStreamPlayer = wavStreamPlayerRef.current;
     
     setIsRecording(false);
     await wavRecorder.pause();
+
+    // Add this: Interrupt any ongoing playback when stopping recording
+    const trackSampleOffset = await wavStreamPlayer.interrupt();
+    if (trackSampleOffset?.trackId) {
+      const { trackId, offset } = trackSampleOffset;
+      await client.cancelResponse(trackId, offset);
+    }
+
     client.createResponse();
   };
 
