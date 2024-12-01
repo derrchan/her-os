@@ -6,7 +6,7 @@ The her os animation was inspired by [@psyonline's CodePen](https://codepen.io/p
 
 **Note:** Works best in Google Chrome.
 
-[![Demo](https://img.youtube.com/vi/VYS9cEkz2jg/0.jpg)](https://youtu.be/VYS9cEkz2jg)
+[![Demo](/her.png)](https://youtu.be/VYS9cEkz2jg)
 
 ## Getting Started
 
