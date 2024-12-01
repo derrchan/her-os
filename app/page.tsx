@@ -9,7 +9,6 @@ declare global {
 
 import AnimationComponent from '@/component/AnimationComponent'
 import { Mic, Speaker } from 'lucide-react'
-import { useAudioRecorder } from '@/hooks/useAudioRecorder'
 import { useEffect, useRef, useState } from 'react'
 import { RealtimeClient } from '@openai/realtime-api-beta';
 import { WavRecorder, WavStreamPlayer } from '@/lib/wavtools';
@@ -17,14 +16,6 @@ import { WavRecorder, WavStreamPlayer } from '@/lib/wavtools';
 export default function Home() {
   const [isRecording, setIsRecording] = useState(false);
 
-  const {
-    audioUrl,
-    audioData,
-    hasBeenPlayed,
-    startRecording: startAudioRecording,
-    stopRecording: stopAudioRecording,
-    playAudio,
-  } = useAudioRecorder();
   // Add client ref
   const clientRef = useRef<RealtimeClient>(
     new RealtimeClient({
@@ -131,15 +122,6 @@ export default function Home() {
         >
           <Mic size={24} className={`transition-opacity ${isRecording ? 'opacity-100' : 'opacity-90'}`} />
         </button>
-        
-        {audioUrl && (
-          <button 
-            className="p-4 bg-black/20 backdrop-blur-sm border border-white/10 text-white/90 rounded-full hover:bg-black/30 transition-all shadow-lg"
-            onClick={playAudio}
-          >
-            <Speaker size={24} />
-          </button>
-        )}
       </div>
     </main>
   );
