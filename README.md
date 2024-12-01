@@ -1,8 +1,16 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a simple Next.js implementation of OpenAI's realtime API with inspirations from her os. 
+
+![AI Assistant Interface](./public/her.png)
 
 ## Getting Started
 
-First, run the development server:
+First, set up your environment variables:
+
+```bash
+NEXT_PUBLIC_OPENAI_API_KEY=your_api_key_here
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
@@ -31,6 +39,6 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+**Note:** Make sure to configure your environment variables in your deployment platform.
